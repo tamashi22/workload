@@ -1,0 +1,28 @@
+.app-button {
+  font-size: 12px;
+  border: 0;
+  outline: none;
+  height: 35px;
+  color: white;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  &__full {
+    width: 100%;
+  }
+  &--blue {
+    background: $EXTRA_LINE_BLUE;
+    &:hover {
+      background: $LIGHT_BLUE;
+    }
+  }
+  &--disabled {
+    &__opacity {
+      &:disabled {
+        opacity: 0.5;
+      }
+    }
+  }
+}

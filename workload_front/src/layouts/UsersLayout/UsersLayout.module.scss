@@ -1,0 +1,14 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.createBtn {
+  width: fit-content;
+  width: 250px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}

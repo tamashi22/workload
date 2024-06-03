@@ -1,0 +1,38 @@
+.container {
+  z-index: 999;
+  padding: 20px;
+  background: white;
+  border-bottom: 1px solid gainsboro;
+}
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.buttonsWrap {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.button {
+  max-width: 100px;
+  display: flex;
+  padding: 10px;
+}
+.label {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+  gap: 5px;
+}
+.selectOption {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  .react-select__single-value {
+    display: flex;
+    align-items: center;
+  }
+}

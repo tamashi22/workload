@@ -1,0 +1,65 @@
+.container {
+  z-index: 999;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  position: fixed;
+}
+
+.overlay {
+  flex: 1;
+  background: rgba(23, 23, 23, 0.35);
+}
+.sideBar {
+  position: relative;
+  display: flex;
+}
+.logo {
+  
+  width: 150px;
+  height: 150px;
+  margin-left: 30px;
+}
+.categoriesWrapper {
+  width: 320px;
+  background: #ffffff;
+  height: 100vh;
+  padding: 24px;
+
+  .itemWrapper {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
+    &:hover {
+      background-color: $LIGHT_BLUE;
+      color: white;
+    }
+    .categoryName {
+      font-size: 16px;
+      margin-left: 12px;
+    }
+    .categoryIcon {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  .itemWrapperActive {
+    background-color: $LIGHT_BLUE;
+  }
+}
+
+.close {
+  margin-top: 10px;
+  margin-left: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}

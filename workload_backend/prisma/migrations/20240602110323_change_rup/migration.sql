@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Rup" ALTER COLUMN "cafedraId" DROP DEFAULT;

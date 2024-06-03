@@ -1,0 +1,191 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              Int              @id @default(autoincrement())
+  email           String           @unique
+  name            String
+  stavka          Float
+  type            String?
+  dateBirth       DateTime?
+  degree          String?
+  role            String[]         @default(["USER"]) @db.VarChar
+  numberOfPhone   String?
+  password        String
+  cafedraId       Int
+  cafedra         Cafedra          @relation(fields: [cafedraId], references: [id])
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  individualPlans IndividualPlan[]
+  annoucements    Annoucement[]
+}
+
+model Cafedra {
+  id             Int             @id @default(autoincrement())
+  name           String          @unique
+  users          User[]
+  educationYears EducationYear[]
+  Group          Group[]
+  Rup            Rup[]
+  Workload       Workload[]
+}
+
+model Group {
+  id                 Int           @id @default(autoincrement())
+  name               String        @unique
+  numberOfStudents   Int
+  cafedraId          Int
+  cafedra            Cafedra       @relation(fields: [cafedraId], references: [id])
+  course             String
+  direction          String
+  scolarshipStudents Int
+  contractStudents   Int
+  educationYearId    Int
+  educationYear      EducationYear @relation(fields: [educationYearId], references: [id])
+}
+
+model EducationYear {
+  id              Int              @id @default(autoincrement())
+  name            String           @unique
+  cafedraId       Int
+  cafedra         Cafedra          @relation(fields: [cafedraId], references: [id])
+  rup             Rup[]
+  groups          Group[]
+  individualPlans IndividualPlan[]
+  workload        Workload[]
+  annoutnments    Annoucement[]
+}
+
+model Rup {
+  id               Int           @id @default(autoincrement())
+  disciplineCode   String        @unique
+  nameOfDiscipline String
+  department       String
+  direction        String
+  credits          String
+  hours            String
+  totalHours       String
+  lectures         String?
+  laboratories     String?
+  practical        String?
+  independentWorks String?
+  y1s1Laboratories String? // 1y1sLabaratories
+  y1s1Practical    String? // 1y1sPractical
+  y1s1Credits      String? // 1y1sCredits
+  y1s1Lectures     String? // 1y1sLectures
+  y1s2Laboratories String? // 1y2sLabaratories
+  y1s2Practical    String? // 1y2sPractical
+  y1s2Credits      String? // 1y2sCredits
+  y1s2Lectures     String? // 1y2sLectures
+  y2s3Laboratories String? // 2y3sLabaratories
+  y2s3Practical    String? // 2y3sPractical
+  y2s3Credits      String? // 2y3sCredits
+  y2s3Lectures     String? // 2y3sLectures
+  y2s4Laboratories String? // 2y4sLabaratories
+  y2s4Practical    String? // 2y4sPractical
+  y2s4Credits      String? // 2y4sCredits
+  y2s4Lectures     String? // 2y4sLectures
+  y3s5Laboratories String? // 3y5sLabaratories
+  y3s5Practical    String? // 3y5sPractical
+  y3s5Credits      String? // 3y5sCredits
+  y3s5Lectures     String? // 3y5sLectures
+  y3s6Laboratories String? // 3y6sLabaratories
+  y3s6Practical    String? // 3y6sPractical
+  y3s6Credits      String? // 3y6sCredits
+  y3s6Lectures     String? // 3y6sLectures
+  y4s7Laboratories String? // 4y7sLabaratories
+  y4s7Practical    String? // 4y7sPractical
+  y4s7Credits      String? // 4y7sCredits
+  y4s7Lectures     String? // 4y7sLectures
+  y4s8Laboratories String? // 4y8sLabaratories
+  y4s8Practical    String? // 4y8sPractical
+  y4s8Credits      String? // 4y8sCredits
+  y4s8Lectures     String? // 4y8sLectures
+  zachet           String?
+  courseWorks      String?
+  stateExam        String?
+  educationYearId  Int
+  cafedraId        Int
+  cafedra          Cafedra       @relation(fields: [cafedraId], references: [id])
+  educationYear    EducationYear @relation(fields: [educationYearId], references: [id])
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  workload         Workload[]
+}
+
+model Workload {
+  id                       Int           @id @default(autoincrement())
+  educationYearId          Int
+  educationYear            EducationYear @relation(fields: [educationYearId], references: [id])
+  rupId                    Int
+  rup                      Rup           @relation(fields: [rupId], references: [id])
+  cafedraId                Int
+  cafedra                  Cafedra       @relation(fields: [cafedraId], references: [id])
+  discipline               String
+  group                    String
+  course                   String
+  numberOfStudents         String 
+  numberOfStudentsWithCoef String?
+  credits                  String
+  semester                 String
+  lectionsByRup            String?
+  lectionsByWorkload       String?
+  practicalByRup           String?
+  practicalByWorkload      String?
+  labaratoriesByRup        String?
+  labaratoriesByWorkload   String?
+  courseWorksByRup         String?
+  courseWorksByAccept      String?
+  courseWorksByManagement  String?
+  consultationsOnline      String?
+  consultationsIndividual  String?
+  consultationsByTeacher   String?
+  cheksOfWorks             String?
+  cheksByHeadOfCafedra     String?
+  reviewsOfworks           String?
+  eduPractice              String?
+  interships               String?
+  tests                    String?
+  exams                    String?
+  diplomManagement         String?
+  diplomConsultations      String?
+  diplomReviews            String?
+  diplomExams              String?
+  individualWorks          String?
+  scolarshipStudents       String?
+  contractStudents         String?
+  scolarshipHours          String?
+  contractHours            String?
+  totalWorkloadHours       String?
+  createdAt                DateTime      @default(now())
+  updatedAt                DateTime      @updatedAt
+}
+
+model IndividualPlan {
+  id              Int           @id @default(autoincrement())
+  userId          Int
+  user            User          @relation(fields: [userId], references: [id])
+  educationYearId Int
+  educationYear   EducationYear @relation(fields: [educationYearId], references: [id])
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model Annoucement {
+  id              Int           @id @default(autoincrement())
+  title           String
+  description     String?
+  file            String
+  userId          Int
+  user            User          @relation(fields: [userId], references: [id])
+  educationYearId Int
+  educationYear   EducationYear @relation(fields: [educationYearId], references: [id])
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}

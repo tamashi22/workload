@@ -1,0 +1,9 @@
+.vertical-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px; /* Adjust height as needed */
+  white-space: nowrap;
+  transform: rotate(-90deg);
+  transform-origin: left top 0;
+}

@@ -1,0 +1,24 @@
+.wrapper {
+  height: 60px;
+  border-bottom: 1px solid gainsboro;
+
+  top: 0;
+  z-index: 999;
+  background: white;
+  align-items: center;
+}
+.container {
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.button {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+.logo {
+  width: 40px;
+  height: 40px;
+}

@@ -1,0 +1,45 @@
+.title {
+  font-size: 40px;
+  text-align: center;
+  @media screen and (max-width: $TABLET_SIZE) {
+    font-size: 32px;
+  }
+  @media screen and (max-width: $MOBILE_SIZE) {
+    font-size: 24px;
+  }
+}
+.input {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.wrapper {
+  margin-top: 32px;
+  display: flex;
+  .checkBox {
+    border-radius: 100px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
+  span {
+    margin-left: 10px;
+    font-size: 14px;
+    a {
+      color: $PRIMARY_BLUE;
+      text-decoration: underline;
+    }
+  }
+}
+
+.button {
+  font-size: 16px;
+  margin-top: 20px;
+  height: 40px;
+}
+.error {
+  text-align: center;
+  font-size: 14px;
+
+  color: red;
+  margin-top: 10px;
+}

@@ -1,0 +1,111 @@
+.container {
+  position: relative;
+  align-items: center;
+  display: flex;
+}
+
+.label {
+  font-size: 14;
+  margin-bottom: 5px;
+  color: $TITLE_ACTIVE_5;
+}
+
+.labelError {
+  color: $PRIMARY_RED;
+}
+
+.input {
+  font-size: 16px;
+  width: 100%;
+  background-color: $PRIMARY_GREY;
+  border: 0;
+  padding: 12px 24px;
+  border-radius: 100px;
+  outline: none;
+  color: $TITLE_ACTIVE_1;
+  &::placeholder {
+    color: $TITLE_ACTIVE_5;
+  }
+  &:focus::placeholder {
+    color: transparent;
+  }
+
+  &--iconLeft {
+    padding-left: 40px;
+  }
+  &--button {
+    padding-right: 40px;
+  }
+}
+
+.icon-left {
+  
+  position: absolute;
+  left: 15px;
+  //@extend .center-vertical;
+}
+
+.error {
+  font-size: 12px;
+  padding-left: 5px;
+  height: 20px;
+  color: $PRIMARY_RED;
+}
+
+.button {
+  font-size: 14px;
+  color: $PRIMARY_BLUE;
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.arrowIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  right: 16px;
+  top: 50%;
+  cursor: pointer;
+  transition: all 0.1s linear;
+  &--active {
+    transform: rotate(180deg);
+  }
+}
+
+.dropdown {
+  display: none;
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  height: 100px;
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: white;
+  box-shadow: 0px 5px 30px rgba(16, 24, 40, 0.05);
+  border: solid 1px $TITLE_ACTIVE_8;
+  border-radius: 10px;
+  &--active {
+    display: block;
+  }
+}
+
+.close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right: 12px;
+  top: calc(50% - 12px);
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  cursor: pointer;
+  @media screen and (max-width: $MOBILE_SIZE) {
+    display: none;
+  }
+}
