@@ -181,7 +181,7 @@ model Annoucement {
   id              Int           @id @default(autoincrement())
   title           String
   description     String?
-  file            String
+  file            String?
   userId          Int
   user            User          @relation(fields: [userId], references: [id])
   educationYearId Int

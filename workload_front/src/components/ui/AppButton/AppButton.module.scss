@@ -18,6 +18,12 @@
       background: $LIGHT_BLUE;
     }
   }
+  &--red {
+    background: $PRIMARY_RED;
+    &:hover {
+      opacity: 0.7;
+    }
+  }
   &--disabled {
     &__opacity {
       &:disabled {

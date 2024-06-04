@@ -1,3 +1,4 @@
+@import 'nprogress.scss';
 * {
   margin: 0;
   padding: 0;
@@ -5,6 +6,5 @@
   font-family: 'Montserrat', sans-serif;
 }
 .container {
-  width: 100vw;
   height: auto;
 }

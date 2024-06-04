@@ -8,6 +8,11 @@ const UsersApi = {
     return response.data;
   },
 
+  findOneById: async id => {
+    const response = await request.get(`/users/${id}`);
+    return response.data;
+  },
+
   create: async user => {
     const response = await request.post('/users', user);
     return response.data;

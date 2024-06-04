@@ -1,0 +1,55 @@
+.wrapper {
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  width: 35%;
+  height: fit-content;
+}
+.userImg {
+  display: flex;
+  justify-content: center;
+  .image {
+    height: 100px;
+    width: 100px;
+    border-radius: 100px;
+  }
+}
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  color: gray;
+  justify-content: center;
+  align-items: center;
+}
+.name {
+  font-size: 20px;
+  margin-top: 10px;
+}
+.degree {
+  font-size: 16px;
+}
+
+.userPlan {
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  table {
+    margin-top: 10px;
+    th {
+      border-bottom: 1px solid gray;
+    }
+    td {
+      border-bottom: 1px solid lightgray;
+    }
+  }
+}
+.linkBtn {
+  max-width: 300px;
+  margin-top: 10px;
+}
+.exitBtn {
+  margin-top: 20px;
+  max-width: 200px;
+}

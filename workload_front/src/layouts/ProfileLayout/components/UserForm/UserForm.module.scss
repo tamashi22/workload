@@ -1,0 +1,29 @@
+.wrapper {
+  background-color: white;
+  border-radius: 20px;
+  padding: 30px;
+  max-width: 60%;
+  width: 100%;
+}
+.form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+}
+.inputWrapper {
+  margin-top: 20px;
+  .input {
+    height: 40px;
+    width: 350px;
+  }
+}
+.title2{
+  margin-top: 20px;
+}
+.form1 {
+  margin-top: 20px;
+  background-color: $GREY;
+  border-radius: 20px;
+  padding: 10px 5px;
+}
