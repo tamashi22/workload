@@ -5,17 +5,19 @@ import { MdOutlineAlternateEmail } from 'react-icons/md';
 import { TbPasswordUser } from 'react-icons/tb';
 import Select from 'react-select';
 import { jwtDecode } from 'jwt-decode';
+import { ClipLoader } from 'react-spinners';
 import AuthWrapper from './components/AuthWrapper';
 import { TextField } from '@/components/ui/TextField';
 import { AppButton } from '@/components/ui/AppButton';
 import AuthApi from '@/services/AuthApi'; // Import the AuthApi service
-
+import events from '@/helpers/signInEvents';
 import styles from './AuthLayout.module.scss';
 
 const AuthLayout = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [year, setYear] = useState({ value: 1, label: '2023-2024' });
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const router = useRouter();
   const options = [
@@ -26,6 +28,7 @@ const AuthLayout = () => {
 
   const onLogin = async event => {
     event.preventDefault();
+    setLoading(true);
     try {
       const data = await AuthApi.login(email, password);
       console.log('Login successful', data);
@@ -42,12 +45,14 @@ const AuthLayout = () => {
 
       // Save selected year to local storage
       localStorage.setItem('selectedYear', JSON.stringify(year));
-
+      events.publish('userChange');
       // Redirect to home page or another route
       router.push('/');
     } catch (error) {
       setError(error.message || 'An error occurred');
       console.error('Login error', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -87,8 +92,8 @@ const AuthLayout = () => {
           </span>
         </div>
 
-        <AppButton className={styles.button} type="submit">
-          Войти
+        <AppButton className={styles.button} type="submit" disabled={loading}>
+          {loading ? <ClipLoader size={20} color="#fff" /> : 'Войти'}
         </AppButton>
       </form>
       {error && <div className={styles.error}>Непральный пароль или email</div>}

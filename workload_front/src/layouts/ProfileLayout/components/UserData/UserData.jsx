@@ -5,7 +5,16 @@ import styles from './UserData.module.scss';
 
 const UserData = ({ user, onLogout }) => {
   const [isMounted, setIsMounted] = useState(false);
+  const [currentUser, setUser] = useState(null);
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const userData = localStorage.getItem('userData');
+      if (userData) {
+        setUser(JSON.parse(userData));
+      }
+    }
+  }, []);
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -70,10 +79,16 @@ const UserData = ({ user, onLogout }) => {
             Перейти в индивидуальный план
           </AppButton>
         </div>
-        <AppButton variant="red" className={styles.exitBtn} onClick={onLogout}>
-          <IoMdExit size={20} />
-          Выйти из аккаунта
-        </AppButton>
+        {currentUser.id === user.id && (
+          <AppButton
+            variant="red"
+            className={styles.exitBtn}
+            onClick={onLogout}
+          >
+            <IoMdExit size={20} />
+            Выйти из аккаунта
+          </AppButton>
+        )}
       </div>
     </div>
   );

@@ -201,4 +201,34 @@ export class CreateWorkloadDto {
   @IsOptional()
   @ApiProperty()
   totalWorkloadHours?: string;
+
+  @IsString()
+  @IsOptional()
+  @ApiProperty()
+  hoursPhond?: string;
+
+  @IsInt()
+  @IsOptional()
+  @ApiProperty()
+  practice?: number;
+
+  @IsInt()
+  @IsOptional()
+  @ApiProperty()
+  lectures?: number;
+
+  @IsInt()
+  @IsOptional()
+  @ApiProperty()
+  laboratories?: number;
+
+  @IsInt()
+  @IsOptional()
+  @ApiProperty()
+  examsColumn?: number;
+
+  @IsInt()
+  @IsOptional()
+  @ApiProperty()
+  other?: number;
 }

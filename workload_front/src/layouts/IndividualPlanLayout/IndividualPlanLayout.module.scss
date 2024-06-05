@@ -1,0 +1,31 @@
+.wrapper {
+}
+
+.tabs {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+  padding: 5px 20px;
+}
+
+.tabs button {
+  padding: 10px 10px;
+  margin-right: 5px;
+  background-color: #f0f0f0;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  border-radius: 4px;
+}
+
+.tabs .activeTab {
+  background-color: #007bff;
+  color: white;
+}
+
+.content {
+  padding: 10px;
+  border: 1px solid #f0f0f0;
+  border-radius: 4px;
+  background-color: #fff;
+}

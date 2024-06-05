@@ -8,22 +8,27 @@ datasource db {
 }
 
 model User {
-  id              Int              @id @default(autoincrement())
-  email           String           @unique
-  name            String
-  stavka          Float
-  type            String?
-  dateBirth       DateTime?
-  degree          String?
-  role            String[]         @default(["USER"]) @db.VarChar
-  numberOfPhone   String?
-  password        String
-  cafedraId       Int
-  cafedra         Cafedra          @relation(fields: [cafedraId], references: [id])
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
-  individualPlans IndividualPlan[]
-  annoucements    Annoucement[]
+  id                    Int              @id @default(autoincrement())
+  email                 String           @unique
+  name                  String
+  stavka                Float
+  type                  String?
+  dateBirth             DateTime?
+  degree                String?
+  role                  String[]         @default(["USER"]) @db.VarChar
+  numberOfPhone         String?
+  password              String
+  cafedraId             Int
+  cafedra               Cafedra          @relation(fields: [cafedraId], references: [id])
+  createdAt             DateTime         @default(now())
+  updatedAt             DateTime         @updatedAt
+  individualPlans       IndividualPlan[]
+  annoucements          Annoucement[]
+  practiceWorkloads     Workload[]       @relation("PracticeUser")
+  lecturesWorkloads     Workload[]       @relation("LecturesUser")
+  laboratoriesWorkloads Workload[]       @relation("LaboratoriesUser")
+  examsColumnWorkloads  Workload[]       @relation("ExamsColumnUser")
+  otherWorkloads        Workload[]       @relation("OtherUser")
 }
 
 model Cafedra {
@@ -130,7 +135,7 @@ model Workload {
   discipline               String
   group                    String
   course                   String
-  numberOfStudents         String 
+  numberOfStudents         String
   numberOfStudentsWithCoef String?
   credits                  String
   semester                 String
@@ -163,19 +168,30 @@ model Workload {
   scolarshipHours          String?
   contractHours            String?
   totalWorkloadHours       String?
+  hoursPhond               String?
+  practice                 Int? // Optional foreign key to User
+  lectures                 Int? // Optional foreign key to User
+  laboratories             Int? // Optional foreign key to User
+  examsColumn              Int? // Optional foreign key to User
+  other                    Int? // Optional foreign key to User
+  practiceUser             User?         @relation("PracticeUser", fields: [practice], references: [id])
+  lecturesUser             User?         @relation("LecturesUser", fields: [lectures], references: [id])
+  laboratoriesUser         User?         @relation("LaboratoriesUser", fields: [laboratories], references: [id])
+  examsColumnUser          User?         @relation("ExamsColumnUser", fields: [examsColumn], references: [id])
+  otherUser                User?         @relation("OtherUser", fields: [other], references: [id])
   createdAt                DateTime      @default(now())
   updatedAt                DateTime      @updatedAt
 }
 
-model IndividualPlan {
-  id              Int           @id @default(autoincrement())
-  userId          Int
-  user            User          @relation(fields: [userId], references: [id])
-  educationYearId Int
-  educationYear   EducationYear @relation(fields: [educationYearId], references: [id])
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
-}
+  model IndividualPlan {
+    id              Int           @id @default(autoincrement())
+    userId          Int
+    user            User          @relation(fields: [userId], references: [id])
+    educationYearId Int
+    educationYear   EducationYear @relation(fields: [educationYearId], references: [id])
+    createdAt       DateTime      @default(now())
+    updatedAt       DateTime      @updatedAt
+  }
 
 model Annoucement {
   id              Int           @id @default(autoincrement())

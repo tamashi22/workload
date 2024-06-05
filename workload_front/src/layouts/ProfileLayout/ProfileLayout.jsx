@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { UserData } from './components/UserData';
 import { UserForm } from './components/UserForm';
 import UsersApi from '@/services/UsersApi';
+import events from '@/helpers/signInEvents';
 import styles from './ProfileLayout.module.scss';
 const ProfileLayout = () => {
   const router = useRouter();
@@ -11,7 +12,9 @@ const ProfileLayout = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('userData');
     router.push('/signIn');
+    events.publish('userChange');
   };
   useEffect(() => {
     if (id) {

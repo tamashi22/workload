@@ -26,9 +26,14 @@ const GroupTable = ({ groups, setGroups }) => {
     }
 
     const newData = [...groups];
+
     changes.forEach(([row, prop, oldValue, newValue]) => {
+      if (!newData[row]) {
+        newData[row] = {};
+      }
       newData[row][prop] = newValue;
     });
+
     setGroups(newData);
   };
 

@@ -11,6 +11,7 @@ import { FaUsers } from 'react-icons/fa';
 import { PiStudentFill } from 'react-icons/pi';
 import { FaNewspaper } from 'react-icons/fa';
 import { CgProfile } from 'react-icons/cg';
+import { GrPlan } from 'react-icons/gr';
 import Logo from '@/assets/images/logo.png';
 
 import styles from './SideBar.module.scss';
@@ -87,14 +88,14 @@ const SideBar = ({ onClose }) => {
             <span className={styles.categoryName}>Профиль</span>
           </Link>
           <Link
-            href="/individulPlan"
+            href={`/individualPlan/${user.id}`}
             className={clsx(
               styles.itemWrapper,
               // styles.itemWrapperActive
             )}
           >
             <span className={styles.categoryIcon}>
-              <CgProfile />
+              <GrPlan />
             </span>
             <span className={styles.categoryName}>Идивидуальный план</span>
           </Link>
