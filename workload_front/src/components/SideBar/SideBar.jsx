@@ -123,6 +123,18 @@ const SideBar = ({ onClose }) => {
             </span>
             <span className={styles.categoryName}>Пользователи</span>
           </Link>
+          <Link
+            href="/analysis"
+            className={clsx(
+              styles.itemWrapper,
+              // styles.itemWrapperActive
+            )}
+          >
+            <span className={styles.categoryIcon}>
+              <FaNewspaper />
+            </span>
+            <span className={styles.categoryName}>Аналитика</span>
+          </Link>
         </div>
       </div>
       <div className={styles.overlay} onClick={onClose}>
