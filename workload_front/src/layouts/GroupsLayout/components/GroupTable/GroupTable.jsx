@@ -79,11 +79,11 @@ const GroupTable = ({ groups, setGroups }) => {
         minSpareRows={1}
         licenseKey="non-commercial-and-evaluation"
         language={ruRU.languageCode}
-        formulas={{
-          engine: HyperFormula.buildEmpty({
-            licenseKey: 'internal-use-in-handsontable',
-          }),
-        }}
+        // formulas={{
+        //   engine: HyperFormula.buildEmpty({
+        //     licenseKey: 'internal-use-in-handsontable',
+        //   }),
+        // }}
         afterChange={handleChange}
         afterRemoveRow={handleRemoveRow}
       >

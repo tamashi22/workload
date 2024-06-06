@@ -120,7 +120,7 @@ const RupTable = ({ data }) => {
       header.style.whiteSpace = 'nowrap';
       header.style.display = 'flex';
       header.style.alignItems = 'center';
-
+ header.style.textWrap = 'wrap';    
       header.style.justifyContent = 'center';
     }
   };
@@ -138,7 +138,7 @@ const RupTable = ({ data }) => {
         minSpareRows={1}
         contextMenu={true}
         filters={true}
-        rowHeaders={true}
+        rowHeaders={true} 
         height="auto"
         columnSorting={true}
         colHeaders={true}

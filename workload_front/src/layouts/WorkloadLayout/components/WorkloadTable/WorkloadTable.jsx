@@ -10,7 +10,7 @@ import styles from './WorkloadTable.module.scss';
 
 const WorkloadTable = ({ data, teachers, useDefaultFormulas, setWorkload }) => {
   const [tableData, setTableData] = useState([]);
-
+  console.log(tableData);
   // Register Handsontable modules and language dictionary
   registerAllModules();
   registerLanguageDictionary(ruRU);
@@ -67,8 +67,6 @@ const WorkloadTable = ({ data, teachers, useDefaultFormulas, setWorkload }) => {
     // setWorkload(initialData);
   }, [data, useDefaultFormulas]);
 
-
-  
   // Column titles in Russian
   const columnTitles = {
     discipline: 'Дисциплины',
@@ -160,6 +158,7 @@ const WorkloadTable = ({ data, teachers, useDefaultFormulas, setWorkload }) => {
   const calculateHoursPhond = rowData => {
     const derivedFields = calculateDerivedFields(rowData);
     const totalHours = derivedFields.totalWorkloadHours;
+    console.log(derivedFields.totalWorkloadHours);
     const lections = rowData.lectures ? derivedFields.lectionsByWorkload : 0;
     const practical = rowData.practice ? derivedFields.practicalByWorkload : 0;
     const laboratories = rowData.laboratories
@@ -241,101 +240,106 @@ const WorkloadTable = ({ data, teachers, useDefaultFormulas, setWorkload }) => {
     <div>
       <h2>Нагрузка</h2>
       <button onClick={exportToExcel}>Export to Excel</button>
-      <HotTable
-        data={tableData}
-        colHeaders={Object.values(columnTitles)}
-        rowHeaders={true}
-        dropdownMenu={true}
-        contextMenu={true}
-        autoColumnSize={false}
-        hiddenColumns={{
-          indicators: true,
-        }}
-        autoRowSize={true}
-        filters={true}
-        manualColumnResize={true}
-        manualRowMove={true}
-        multiColumnSorting={true}
-        minSpareRows={1}
-        licenseKey="non-commercial-and-evaluation"
-        language={ruRU.languageCode}
-        formulas={{ engine: hyperformulaInstance }}
-        afterChange={(changes, source) => {
-          if (source === 'edit') {
-            changes.forEach(([row, prop, oldValue, newValue]) => {
-              if (
-                [
-                  'practice',
-                  'lectures',
-                  'laboratories',
-                  'examsColumn',
-                  'other',
-                ].includes(prop)
-              ) {
-                handleDropdownChange(row, prop, newValue);
+      <div className={styles.tableContainer}>
+        <div className={styles.table}>
+          <HotTable
+            data={tableData}
+            colHeaders={Object.values(columnTitles)}
+            rowHeaders={true}
+            dropdownMenu={true}
+            contextMenu={true}
+            autoColumnSize={false}
+            preventOverflow="horizontal"
+            hiddenColumns={{
+              indicators: true,
+            }}
+            height="auto"
+            filters={true}
+            manualColumnResize={true}
+            manualRowMove={true}
+            multiColumnSorting={true}
+            minSpareRows={1}
+            licenseKey="non-commercial-and-evaluation"
+            language={ruRU.languageCode}
+            formulas={{ engine: hyperformulaInstance }}
+            afterChange={(changes, source) => {
+              if (source === 'edit') {
+                changes.forEach(([row, prop, oldValue, newValue]) => {
+                  if (
+                    [
+                      'practice',
+                      'lectures',
+                      'laboratories',
+                      'examsColumn',
+                      'other',
+                    ].includes(prop)
+                  ) {
+                    handleDropdownChange(row, prop, newValue);
+                  }
+                });
               }
-            });
-          }
-        }}
-        afterGetColHeader={afterGetColHeader}
-      >
-        {Object.keys(columnTitles).map((key, index) => (
-          <HotColumn
-            key={index}
-            data={key}
-            title={`${getColumnName(index)} ${columnTitles[key]}`}
-            type={
-              [
-                'totalWorkloadHours',
-                'individualWorks',
-                'scolarshipHours',
-                'contractHours',
-                'hoursPhond',
-              ].includes(key)
-                ? 'numeric'
-                : key === 'teacher'
-                ? 'dropdown'
-                : [
+            }}
+            afterGetColHeader={afterGetColHeader}
+          >
+            {Object.keys(columnTitles).map((key, index) => (
+              <HotColumn
+                key={index}
+                data={key}
+                title={`${getColumnName(index)} ${columnTitles[key]}`}
+                type={
+                  [
+                    'totalWorkloadHours',
+                    'individualWorks',
+                    'scolarshipHours',
+                    'contractHours',
+                    'hoursPhond',
+                  ].includes(key)
+                    ? 'numeric'
+                    : key === 'teacher'
+                    ? 'dropdown'
+                    : [
+                        'practice',
+                        'lectures',
+                        'laboratories',
+                        'examsColumn',
+                        'other',
+                      ].includes(key)
+                    ? 'dropdown'
+                    : 'text'
+                }
+                source={
+                  [
                     'practice',
                     'lectures',
                     'laboratories',
                     'examsColumn',
                     'other',
                   ].includes(key)
-                ? 'dropdown'
-                : 'text'
-            }
-            source={
-              [
-                'practice',
-                'lectures',
-                'laboratories',
-                'examsColumn',
-                'other',
-              ].includes(key)
-                ? teachers.map(teacher => teacher.name)
-                : undefined
-            }
-            numericFormat={
-              [
-                'numberOfStudents',
-                'numberOfStudentsWithCoef',
-                'lectionsByWorkload',
-                'practicalByWorkload',
-                'labaratoriesByWorkload',
-                'exams',
-                'individualWorks',
-                'scolarshipHours',
-                'contractHours',
-                'totalWorkloadHours',
-                'hoursPhond',
-              ].includes(key)
-                ? { pattern: '0.00', culture: 'en-US' }
-                : undefined
-            }
-          />
-        ))}
-      </HotTable>
+                    ? teachers.map(teacher => teacher.name)
+                    : undefined
+                }
+                numericFormat={
+                  [
+                    'numberOfStudents',
+                    'numberOfStudentsWithCoef',
+                    'lectionsByWorkload',
+                    'practicalByWorkload',
+                    'labaratoriesByWorkload',
+                    'exams',
+                    'individualWorks',
+                    'scolarshipHours',
+                    'contractHours',
+                    'totalWorkloadHours',
+                    'hoursPhond',
+                  ].includes(key)
+                    ? { pattern: '0.00', culture: 'en-US' }
+                    : undefined
+                }
+              />
+            ))}
+          </HotTable>
+        </div>
+      </div>
     </div>
   );
 };

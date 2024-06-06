@@ -23,11 +23,11 @@ export class AuthService {
       throw new NotFoundException(`No user found for email: ${email}`);
     }
 
-    // const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await bcrypt.compare(password, user.password);
 
-    // if (!isPasswordValid) {
-    //   throw new UnauthorizedException('Invalid password');
-    // }
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Invalid password');
+    }
 
     return {
       accessToken: this.jwtService.sign({ userId: user.id, ...user }),
