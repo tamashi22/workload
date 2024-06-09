@@ -15,7 +15,6 @@
   display: flex;
 }
 .logo {
-  
   width: 150px;
   height: 150px;
   margin-left: 30px;
@@ -23,9 +22,12 @@
 .categoriesWrapper {
   width: 320px;
   background: #ffffff;
-  height: 100vh;
+  height: 100%;
   padding: 24px;
-
+  overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   .itemWrapper {
     padding: 10px;
     display: flex;

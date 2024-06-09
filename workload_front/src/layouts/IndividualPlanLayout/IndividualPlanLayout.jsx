@@ -2,17 +2,33 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import { EducationTable } from './components/EducationTable';
 import { TitleTable } from './components/TitleTable';
+import ScienceTable from './components/ScieceTable';
+import { SimpleTable } from './components/SimpleTable';
 import styles from './IndividualPlanLayout.module.scss';
 
 const IndividualPlanLayout = () => {
   const router = useRouter();
   const { tab, id } = router.query;
   const [isMounted, setIsMounted] = useState(false);
+  const [isFull, setFull] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
+    const storedFillPlan = localStorage.getItem('fillPlan');
+    if (storedFillPlan) {
+      setFull(storedFillPlan === 'true');
+    }
   }, []);
-
+  const simpleData = [
+    {
+      name: 'Участие в заседаниях кафедры ПОКС',
+      dateStart: '10/01/2024',
+      dateEnd: '10/06/2024',
+      plan: 30,
+      fact: isFull ? 30 : 0,
+      flag: false,
+    },
+  ];
   const handleTabChange = newTab => {
     router.push(
       {
@@ -24,27 +40,29 @@ const IndividualPlanLayout = () => {
     );
   };
 
+  const fillPlan = () => {
+    const newValue = !isFull;
+    setFull(newValue);
+    localStorage.setItem('fillPlan', newValue);
+  };
+
   const renderTabContent = useMemo(() => {
     switch (tab) {
       case 'educationTable':
         return <EducationTable />;
       case 'educationMetodological':
-        // Return your component for this tab
-        break;
+        return <SimpleTable />;
       case 'sciece':
-        // Return your component for this tab
-        break;
+        return <ScienceTable />;
       case 'organizationMetodological':
-        // Return your component for this tab
-        break;
+        return <SimpleTable data={simpleData} isFull={isFull} />;
       case 'studentsEducation':
-        // Return your component for this tab
-        break;
+        return <SimpleTable />;
       case 'titleTable':
       default:
-        return <TitleTable />;
+        return <TitleTable fillPlan={fillPlan} isFull={isFull} />;
     }
-  }, [tab]);
+  }, [tab, isFull]);
 
   if (!isMounted) {
     return null;

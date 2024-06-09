@@ -231,4 +231,8 @@ export class CreateWorkloadDto {
   @IsOptional()
   @ApiProperty()
   other?: number;
+  @IsInt()
+  @IsOptional()
+  @ApiProperty()
+  groupId?: number;
 }

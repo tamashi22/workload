@@ -9,6 +9,8 @@ import { RupModule } from './rup/rup.module';
 import { GroupModule } from './group/group.module';
 import { CafedraModule } from './cafedra/cafedra.module';
 import { EducationYearModule } from './education-year/education-year.module';
+import { IndividialPlanModule } from './individial-plan/individial-plan.module';
+import { AnnoucementModule } from './annoucement/annoucement.module';
 
 @Module({
   imports: [
@@ -20,6 +22,8 @@ import { EducationYearModule } from './education-year/education-year.module';
     GroupModule,
     CafedraModule,
     EducationYearModule,
+    IndividialPlanModule,
+    AnnoucementModule,
   ],
   controllers: [AppController],
   providers: [AppService],

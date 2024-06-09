@@ -32,13 +32,15 @@ model User {
 }
 
 model Cafedra {
-  id             Int             @id @default(autoincrement())
-  name           String          @unique
+  id             Int              @id @default(autoincrement())
+  name           String           @unique
   users          User[]
   educationYears EducationYear[]
   Group          Group[]
   Rup            Rup[]
   Workload       Workload[]
+  IndividualPlan IndividualPlan[]
+  Annoucement    Annoucement[]
 }
 
 model Group {
@@ -53,6 +55,7 @@ model Group {
   contractStudents   Int
   educationYearId    Int
   educationYear      EducationYear @relation(fields: [educationYearId], references: [id])
+  Workload           Workload[]
 }
 
 model EducationYear {
@@ -125,13 +128,13 @@ model Rup {
 }
 
 model Workload {
-  id                       Int           @id @default(autoincrement())
+  id                       Int              @id @default(autoincrement())
   educationYearId          Int
-  educationYear            EducationYear @relation(fields: [educationYearId], references: [id])
+  educationYear            EducationYear    @relation(fields: [educationYearId], references: [id])
   rupId                    Int
-  rup                      Rup           @relation(fields: [rupId], references: [id])
+  rup                      Rup              @relation(fields: [rupId], references: [id])
   cafedraId                Int
-  cafedra                  Cafedra       @relation(fields: [cafedraId], references: [id])
+  cafedra                  Cafedra          @relation(fields: [cafedraId], references: [id])
   discipline               String
   group                    String
   course                   String
@@ -174,24 +177,71 @@ model Workload {
   laboratories             Int? // Optional foreign key to User
   examsColumn              Int? // Optional foreign key to User
   other                    Int? // Optional foreign key to User
-  practiceUser             User?         @relation("PracticeUser", fields: [practice], references: [id])
-  lecturesUser             User?         @relation("LecturesUser", fields: [lectures], references: [id])
-  laboratoriesUser         User?         @relation("LaboratoriesUser", fields: [laboratories], references: [id])
-  examsColumnUser          User?         @relation("ExamsColumnUser", fields: [examsColumn], references: [id])
-  otherUser                User?         @relation("OtherUser", fields: [other], references: [id])
-  createdAt                DateTime      @default(now())
-  updatedAt                DateTime      @updatedAt
+  practiceUser             User?            @relation("PracticeUser", fields: [practice], references: [id])
+  lecturesUser             User?            @relation("LecturesUser", fields: [lectures], references: [id])
+  laboratoriesUser         User?            @relation("LaboratoriesUser", fields: [laboratories], references: [id])
+  examsColumnUser          User?            @relation("ExamsColumnUser", fields: [examsColumn], references: [id])
+  otherUser                User?            @relation("OtherUser", fields: [other], references: [id])
+  createdAt                DateTime         @default(now())
+  updatedAt                DateTime         @updatedAt
+  IndividualPlan           IndividualPlan[]
+  Group                    Group?           @relation(fields: [groupId], references: [id])
+  groupId                  Int?
 }
 
-  model IndividualPlan {
-    id              Int           @id @default(autoincrement())
-    userId          Int
-    user            User          @relation(fields: [userId], references: [id])
-    educationYearId Int
-    educationYear   EducationYear @relation(fields: [educationYearId], references: [id])
-    createdAt       DateTime      @default(now())
-    updatedAt       DateTime      @updatedAt
-  }
+model IndividualPlan {
+  id                   Int                   @id @default(autoincrement())
+  userId               Int
+  user                 User                  @relation(fields: [userId], references: [id])
+  educationYearId      Int
+  educationYear        EducationYear         @relation(fields: [educationYearId], references: [id])
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
+  workloadId           Int
+  workload             Workload              @relation(fields: [workloadId], references: [id])
+  cafedraId            Int
+  cafedra              Cafedra               @relation(fields: [cafedraId], references: [id])
+  stavka               Int
+  educationPlanWorks   EducationPlanWork[]
+  extracurricularWorks ExtracurricularWork[]
+  flag                 Boolean               @default(false)
+  scienceWorks         ScienceWork[]
+}
+
+model EducationPlanWork {
+  id               Int            @id @default(autoincrement())
+  induvidualPlanId Int
+  induvidualPlan   IndividualPlan @relation(fields: [induvidualPlanId], references: [id])
+  totalHours       Int?
+}
+
+model ExtracurricularWork {
+  id               Int            @id @default(autoincrement())
+  induvidualPlanId Int
+  induvidualPlan   IndividualPlan @relation(fields: [induvidualPlanId], references: [id])
+  totalHours       Int?
+  type             String
+  nameOfWork       String?
+  startDate        DateTime?
+  finishData       DateTime?
+  planHours        Int?
+  factHours        Int?
+  flag             Boolean        @default(false)
+}
+
+model ScienceWork {
+  id               Int            @id @default(autoincrement())
+  induvidualPlanId Int
+  induvidualPlan   IndividualPlan @relation(fields: [induvidualPlanId], references: [id])
+  totalHours       Int?
+  nameOfWork       String?
+  startDate        DateTime?
+  finishData       DateTime?
+  planHours        Int?
+  factHours        Int?
+  flag             Boolean        @default(false)
+  results          String?
+}
 
 model Annoucement {
   id              Int           @id @default(autoincrement())
@@ -204,4 +254,6 @@ model Annoucement {
   educationYear   EducationYear @relation(fields: [educationYearId], references: [id])
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
+  cafedraId       Int
+  cafedra         Cafedra       @relation(fields: [cafedraId], references: [id])
 }

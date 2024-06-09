@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import ReactDOM from 'react-dom';
 import moment from 'moment';
 import { HotTable, HotColumn } from '@handsontable/react';
@@ -6,8 +6,8 @@ import { registerAllModules } from 'handsontable/registry';
 import { registerLanguageDictionary, ruRU } from 'handsontable/i18n';
 import HyperFormula from 'hyperformula';
 import { FaUserEdit, FaTrashAlt } from 'react-icons/fa';
+import { useRouter } from 'next/router';
 import { getColumnName } from '@/helpers/getColumnName';
-import { AppButton } from '@/components/ui/AppButton';
 import 'handsontable/dist/handsontable.full.css';
 import styles from './UsersTable.module.scss';
 
@@ -17,46 +17,46 @@ const dateRenderer = (instance, td, row, col, prop, value, cellProperties) => {
   return td;
 };
 
-const actionRenderer = (
-  instance,
-  td,
-  row,
-  col,
-  prop,
-  value,
-  cellProperties,
-) => {
-  const profileButton = document.createElement('button');
-  profileButton.className = styles.actionButton;
-  ReactDOM.render(<FaUserEdit />, profileButton);
-  profileButton.onclick = () => {
-    // Handle profile button click
-    console.log('Go to Profile:', row);
-  };
+const createActionRenderer = router => {
+  return (instance, td, row, col, prop, value, cellProperties) => {
+    const userId = instance.getDataAtRowProp(row, 'id');
+    const profileButton = document.createElement('button');
 
-  const deleteButton = document.createElement('button');
-  deleteButton.className = styles.actionButton;
-  ReactDOM.render(<FaTrashAlt />, deleteButton);
-  deleteButton.onclick = () => {
-    // Handle delete button click
-    console.log('Delete user:', row);
-    const confirmDelete = window.confirm(
-      'Are you sure you want to delete this user?',
-    );
-    if (confirmDelete) {
-      const updatedUsers = [...instance.getData()];
-      updatedUsers.splice(row, 1); // Remove the user from the data array
-      instance.loadData(updatedUsers); // Reload the data into Handsontable
-    }
-  };
+    profileButton.className = styles.actionButton;
+    ReactDOM.render(<FaUserEdit />, profileButton);
+    profileButton.onclick = () => {
+      // Handle profile button click
+      console.log('Go to Profile:', row);
+      router.push(`/profile/${userId}`);
+    };
 
-  td.innerHTML = ''; // Clear the cell
-  td.appendChild(profileButton);
-  td.appendChild(deleteButton);
-  return td;
+    const deleteButton = document.createElement('button');
+    deleteButton.className = styles.actionButton;
+    ReactDOM.render(<FaTrashAlt />, deleteButton);
+    deleteButton.onclick = () => {
+      // Handle delete button click
+      console.log('Delete user:', row);
+      const confirmDelete = window.confirm(
+        'Are you sure you want to delete this user?',
+      );
+      if (confirmDelete) {
+        const updatedUsers = [...instance.getData()];
+        updatedUsers.splice(row, 1); // Remove the user from the data array
+        instance.loadData(updatedUsers); // Reload the data into Handsontable
+      }
+    };
+
+    td.innerHTML = ''; // Clear the cell
+    td.appendChild(profileButton);
+    td.appendChild(deleteButton);
+    return td;
+  };
 };
 
 const UsersTable = ({ users, setUsers }) => {
+  const router = useRouter();
+  const actionRenderer = useCallback(createActionRenderer(router), [router]);
+
   registerAllModules();
   registerLanguageDictionary(ruRU);
 
@@ -118,21 +118,22 @@ const UsersTable = ({ users, setUsers }) => {
         afterChange={handleAfterChange}
         afterRemoveRow={handleAfterRemoveRow}
       >
-        <HotColumn data="name" title={`${getColumnName(0)} Имя`} />
-        <HotColumn data="email" title={`${getColumnName(1)} Email`} />
+        <HotColumn data="id" title={`${getColumnName(0)} id`} />
+        <HotColumn data="name" title={`${getColumnName(1)} Имя`} />
+        <HotColumn data="email" title={`${getColumnName(2)} Email`} />
         <HotColumn
           data="stavka"
-          title={`${getColumnName(2)} Ставка`}
+          title={`${getColumnName(3)} Ставка`}
           type="numeric"
         />
-        <HotColumn data="type" title={`${getColumnName(3)} Тип штата`} />
+        <HotColumn data="type" title={`${getColumnName(4)} Тип штата`} />
         <HotColumn
           data="dateBirth"
-          title={`${getColumnName(4)} Дата рождения`}
+          title={`${getColumnName(5)} Дата рождения`}
           type="date"
           renderer={dateRenderer}
         />
-        <HotColumn data="degree" title={`${getColumnName(5)} Степень`} />
+        <HotColumn data="degree" title={`${getColumnName(6)} Степень`} />
         <HotColumn data="numberOfPhone" title={`${getColumnName(7)} Телефон`} />
         <HotColumn
           data="actions"

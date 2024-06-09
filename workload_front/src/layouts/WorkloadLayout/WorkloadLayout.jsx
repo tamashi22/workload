@@ -8,13 +8,29 @@ import GroupsApi from '@/services/GroupsApi';
 import UsersApi from '@/services/UsersApi';
 import WorkloadApi from '@/services/WorkloadApi'; // Assuming you have an API for Workload
 import { TableControl } from '@/components/TableContol';
-
+import Switch from '@/components/ui/Switch';
+import styles from './WorkloadLayout.module.scss';
 const WorkloadLayout = () => {
   const [rups, setRups] = useState([]);
   const [workload, setWorkload] = useState([]);
   const [teachers, setTeachers] = useState([]);
   const [groups, setGroups] = useState([]);
   const [useDefaultFormulas, setUseDefaultFormulas] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
+  const [isFull, setFull] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+    const storedFillPlan = localStorage.getItem('useFormula');
+    if (storedFillPlan) {
+      setFull(storedFillPlan === 'true');
+    }
+  }, []);
+  const fillPlan = () => {
+    const newValue = !isFull;
+    setFull(newValue);
+    localStorage.setItem('useFormula', newValue);
+  };
   const [year, setYear] = useState();
   const [cafedra, setCafedra] = useState();
   useEffect(() => {
@@ -156,21 +172,17 @@ const WorkloadLayout = () => {
   return (
     <div>
       <TableControl onSave={handleSaveWorkload}>
-        <AppButton onClick={handleCreateWorkload}>Create Workload</AppButton>
-        <label>
-          <input
-            type="checkbox"
-            checked={useDefaultFormulas}
-            onChange={handleToggleFormulas}
-          />
-          Использовать Формулы
-        </label>
+        <AppButton onClick={handleCreateWorkload}>Расчитать нагрузку</AppButton>
+        <div className={styles.switch}>
+          <Switch value={isFull} onClick={fillPlan} />
+          <p className={styles.label}>Использовать формулы</p>
+        </div>
       </TableControl>
 
       <WorkloadTable
         data={workload}
         teachers={teachers}
-        useDefaultFormulas={useDefaultFormulas}
+        useDefaultFormulas={isFull}
         setWorkload={setWorkload}
       />
       <Toast />

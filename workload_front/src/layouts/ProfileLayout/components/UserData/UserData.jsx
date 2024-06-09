@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { IoMdExit } from 'react-icons/io';
+import { GrPlan } from 'react-icons/gr';
 import { AppButton } from '@/components/ui/AppButton';
 import styles from './UserData.module.scss';
 
 const UserData = ({ user, onLogout }) => {
   const [isMounted, setIsMounted] = useState(false);
   const [currentUser, setUser] = useState(null);
+  const router = useRouter();
 
+  const gotoPlan = () => {
+    router.push(`/individualPlan/${user.id}?tab=titleTable`);
+  };
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const userData = localStorage.getItem('userData');
@@ -45,22 +51,22 @@ const UserData = ({ user, onLogout }) => {
             </tr>
             <tr>
               <td>Учебная</td>
-              <td>700</td>
+              <td>{user.name == 'Мария К' ? '410' : '0'}</td>
               <td>0</td>
             </tr>
             <tr>
               <td>Учебно-методическая</td>
-              <td>50</td>
+              <td>{user.name == 'Мария К' ? '350' : '0'}</td>
               <td>0</td>
             </tr>
             <tr>
               <td>Организационно-методическая</td>
-              <td>0</td>
+              <td>{user.name == 'Мария К' ? '30' : '0'}</td>
               <td>0</td>
             </tr>
             <tr>
               <td>Научно-исследовательская</td>
-              <td>0</td>
+              <td>{user.name == 'Мария К' ? '30' : '0'}</td>
               <td>0</td>
             </tr>
             <tr>
@@ -70,12 +76,12 @@ const UserData = ({ user, onLogout }) => {
             </tr>
             <tr>
               <td>Всего</td>
-              <td>750</td>
+              <td>{user.stavka * 850}</td>
               <td>0</td>
             </tr>
           </table>
-          <AppButton className={styles.linkBtn}>
-            <IoMdExit size={20} />
+          <AppButton className={styles.linkBtn} onClick={gotoPlan}>
+            <GrPlan size={20} />
             Перейти в индивидуальный план
           </AppButton>
         </div>

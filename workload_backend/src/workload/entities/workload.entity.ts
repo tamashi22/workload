@@ -1,5 +1,4 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-
 import { Workload } from '@prisma/client';
 
 export class WorkloadEntity implements Workload {
@@ -127,8 +126,8 @@ export class WorkloadEntity implements Workload {
   @ApiProperty()
   totalWorkloadHours: string | null;
 
-  @ApiPropertyOptional()
-  hoursPhond?: string | null;
+  @ApiProperty()
+  hoursPhond: string | null;
 
   @ApiProperty()
   practice: number | null;
@@ -150,4 +149,7 @@ export class WorkloadEntity implements Workload {
 
   @ApiProperty()
   updatedAt: Date;
+
+  @ApiProperty()
+  groupId: number | null;
 }

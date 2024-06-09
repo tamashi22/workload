@@ -5,22 +5,29 @@ import clsx from 'clsx';
 import { useRouter } from 'next/router';
 import { jwtDecode } from 'jwt-decode';
 import { IoMdClose } from 'react-icons/io';
-import { MdCastForEducation } from 'react-icons/md';
-import { MdOutlineWorkHistory } from 'react-icons/md';
-import { FaUsers } from 'react-icons/fa';
+import { MdCastForEducation, MdOutlineWorkHistory } from 'react-icons/md';
+import { FaUsers, FaNewspaper } from 'react-icons/fa';
 import { PiStudentFill } from 'react-icons/pi';
-import { FaNewspaper } from 'react-icons/fa';
 import { CgProfile } from 'react-icons/cg';
 import { GrPlan } from 'react-icons/gr';
+import { TbBrandGoogleAnalytics } from 'react-icons/tb';
+import { IoIosSettings } from 'react-icons/io';
 import Logo from '@/assets/images/logo.png';
-
 import styles from './SideBar.module.scss';
 
 const SideBar = ({ onClose }) => {
   const router = useRouter();
   const [current, setCurrent] = useState(null);
-  const token = localStorage.getItem('accessToken');
-  const user = jwtDecode(token);
+  const [userRole, setUserRole] = useState([]);
+  const [userId, setUserId] = useState();
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      setUserRole(decodedToken.role);
+      setUserId(decodedToken.id);
+    }
+  }, []);
 
   useEffect(() => {
     const closeBar = () => {
@@ -32,110 +39,135 @@ const SideBar = ({ onClose }) => {
       router.events.off('routeChangeStart', closeBar);
     };
   }, [router.events, onClose]);
+
   return (
     <div className={styles.container}>
       <div className={styles.sideBar}>
         <div className={styles.categoriesWrapper}>
           <Image src={Logo} className={styles.logo} alt="logo" />
-          <Link
-            href="/"
-            className={clsx(
-              styles.itemWrapper,
-              // styles.itemWrapperActive
-            )}
-          >
-            <span className={styles.categoryIcon}>
-              <FaNewspaper />
-            </span>
-            <span className={styles.categoryName}>Обьявления</span>
-          </Link>
-          <Link
-            href="/rup"
-            className={clsx(
-              styles.itemWrapper,
-              // styles.itemWrapperActive
-            )}
-          >
-            <span className={styles.categoryIcon}>
-              <MdCastForEducation />
-            </span>
-            <span className={styles.categoryName}>Учебный План</span>
-          </Link>
+          <div>
+            <Link
+              href="/"
+              className={clsx(
+                styles.itemWrapper,
+                // styles.itemWrapperActive
+              )}
+            >
+              <span className={styles.categoryIcon}>
+                <FaNewspaper />
+              </span>
+              <span className={styles.categoryName}>Обьявления</span>
+            </Link>
 
-          <Link
-            href="/workload"
-            className={clsx(
-              styles.itemWrapper,
-              // styles.itemWrapperActive
-            )}
-          >
-            <span className={styles.categoryIcon}>
-              <MdOutlineWorkHistory />
-            </span>
-            <span className={styles.categoryName}>Нагрузка</span>
-          </Link>
+            <Link
+              href="/rup"
+              className={clsx(
+                styles.itemWrapper,
+                // styles.itemWrapperActive
+              )}
+            >
+              <span className={styles.categoryIcon}>
+                <MdCastForEducation />
+              </span>
+              <span className={styles.categoryName}>Учебный План</span>
+            </Link>
 
-          <Link
-            href={`/profile/${user.id}`}
-            className={clsx(
-              styles.itemWrapper,
-              // styles.itemWrapperActive
-            )}
-          >
-            <span className={styles.categoryIcon}>
-              <CgProfile />
-            </span>
-            <span className={styles.categoryName}>Профиль</span>
-          </Link>
-          <Link
-            href={`/individualPlan/${user.id}`}
-            className={clsx(
-              styles.itemWrapper,
-              // styles.itemWrapperActive
-            )}
-          >
-            <span className={styles.categoryIcon}>
-              <GrPlan />
-            </span>
-            <span className={styles.categoryName}>Идивидуальный план</span>
-          </Link>
+            <Link
+              href="/workload"
+              className={clsx(
+                styles.itemWrapper,
+                // styles.itemWrapperActive
+              )}
+            >
+              <span className={styles.categoryIcon}>
+                <MdOutlineWorkHistory />
+              </span>
+              <span className={styles.categoryName}>Нагрузка</span>
+            </Link>
 
-          <Link
-            href="/groups"
-            className={clsx(
-              styles.itemWrapper,
-              // styles.itemWrapperActive
+            <Link
+              href={`/profile/${userId}`}
+              className={clsx(
+                styles.itemWrapper,
+                // styles.itemWrapperActive
+              )}
+            >
+              <span className={styles.categoryIcon}>
+                <CgProfile />
+              </span>
+              <span className={styles.categoryName}>Профиль</span>
+            </Link>
+
+            <Link
+              href={`/individualPlan/${userId}?tab=titleTable`}
+              className={clsx(
+                styles.itemWrapper,
+                // styles.itemWrapperActive
+              )}
+            >
+              <span className={styles.categoryIcon}>
+                <GrPlan />
+              </span>
+              <span className={styles.categoryName}>Идивидуальный план</span>
+            </Link>
+
+            <Link
+              href="/groups"
+              className={clsx(
+                styles.itemWrapper,
+                // styles.itemWrapperActive
+              )}
+            >
+              <span className={styles.categoryIcon}>
+                <PiStudentFill />
+              </span>
+              <span className={styles.categoryName}>Группы</span>
+            </Link>
+
+            {(userRole.includes('ADMIN') ||
+              userRole.includes('SUPERADMIN')) && (
+              <>
+                <Link
+                  href="/users"
+                  className={clsx(
+                    styles.itemWrapper,
+                    // styles.itemWrapperActive
+                  )}
+                >
+                  <span className={styles.categoryIcon}>
+                    <FaUsers />
+                  </span>
+                  <span className={styles.categoryName}>Пользователи</span>
+                </Link>
+
+                <Link
+                  href="/analysis"
+                  className={clsx(
+                    styles.itemWrapper,
+                    // styles.itemWrapperActive
+                  )}
+                >
+                  <span className={styles.categoryIcon}>
+                    <TbBrandGoogleAnalytics />
+                  </span>
+                  <span className={styles.categoryName}>Аналитика</span>
+                </Link>
+
+                <Link
+                  href="/settings"
+                  className={clsx(
+                    styles.itemWrapper,
+                    // styles.itemWrapperActive
+                  )}
+                >
+                  <span className={styles.categoryIcon}>
+                    <IoIosSettings />
+                  </span>
+                  <span className={styles.categoryName}>Параметры</span>
+                </Link>
+              </>
             )}
-          >
-            <span className={styles.categoryIcon}>
-              <PiStudentFill />
-            </span>
-            <span className={styles.categoryName}>Группы</span>
-          </Link>
-          <Link
-            href="/users"
-            className={clsx(
-              styles.itemWrapper,
-              // styles.itemWrapperActive
-            )}
-          >
-            <span className={styles.categoryIcon}>
-              <FaUsers />
-            </span>
-            <span className={styles.categoryName}>Пользователи</span>
-          </Link>
-          <Link
-            href="/analysis"
-            className={clsx(
-              styles.itemWrapper,
-              // styles.itemWrapperActive
-            )}
-          >
-            <span className={styles.categoryIcon}>
-              <FaNewspaper />
-            </span>
-            <span className={styles.categoryName}>Аналитика</span>
-          </Link>
+          </div>
         </div>
       </div>
       <div className={styles.overlay} onClick={onClose}>
